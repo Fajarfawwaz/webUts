@@ -18,8 +18,11 @@ assets/logo.png
 img/...
 
 Akun contoh (ada di data.js): 
+
 user@example.com : User Biasa 
+
 fajar@email.com : User Fajar ( SAYA ) 
+
 admin@tokobuku.com : Administrator
 
 # Petunjuk singkat:
