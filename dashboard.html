@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Toko Buku Online</title>
+  <style>
+    /* ======== GLOBAL STYLE ======== */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #4f46e5, #7c3aed);
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4f46e5;
+    }
+
+    .greeting {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 10px;
+      color: #555;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .menu-item {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      text-align: center;
+      padding: 25px 15px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: 0.3s;
+      text-decoration: none;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(79,70,229,0.4);
+    }
+
+    .menu-item i {
+      font-size: 35px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .logout {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .logout button {
+      background: crimson;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout button:hover {
+      background: #a40606;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard Toko Buku Online</h1>
+    <p class="greeting" id="greeting"></p>
+
+    <div class="menu">
+      <a href="stok.html" class="menu-item">
+        <i class="fa-solid fa-book"></i>
+        <h3>Katalog Buku</h3>
+        <p>Lihat dan kelola stok buku.</p>
+      </a>
+
+      <a href="checkout.html" class="menu-item">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <h3>Pemesanan</h3>
+        <p>Pesan buku dengan mudah dan cepat.</p>
+      </a>
+
+      <a href="tracking.html" class="menu-item">
+        <i class="fa-solid fa-truck"></i>
+        <h3>Tracking Pengiriman</h3>
+        <p>Cek status pengiriman pesananmu.</p>
+      </a>
+
+      <a href="riwayat.html" class="menu-item">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <h3>Riwayat Transaksi</h3>
+        <p>Lihat transaksi dan laporan pemesanan.</p>
+      </a>
+    </div>
+
+    <div class="logout">
+      <button id="logoutBtn">Keluar</button>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Toko Buku Online | Semua hak cipta dilindungi.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ===== Greeting Berdasarkan Waktu + Nama User =====
+    const greetingEl = document.getElementById('greeting');
+    const now = new Date();
+    const hour = now.getHours();
+
+    let greet = "";
+    if (hour >= 5 && hour < 11) greet = "Selamat Pagi 🌞";
+    else if (hour >= 11 && hour < 15) greet = "Selamat Siang ☀️";
+    else if (hour >= 15 && hour < 18) greet = "Selamat Sore 🌤️";
+    else greet = "Selamat Malam 🌙";
+
+    // Ambil nama user dari localStorage
+    const nama = localStorage.getItem("namaLogin") || "Pengguna";
+
+    greetingEl.textContent = `${greet}, ${nama}!`;
+
+    // ===== Tombol Logout =====
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", () => {
+      if (confirm("Yakin ingin keluar dari akun?")) {
+        localStorage.removeItem("namaLogin");
+        alert("Anda telah logout. Sampai jumpa lagi!");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
