@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracking Pengiriman - Toko Buku Online</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #4f46e5, #7c3aed);
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 0.8s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4f46e5;
+    }
+
+    .search-box {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .search-box input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 70%;
+      font-size: 14px;
+    }
+
+    .search-box button {
+      padding: 8px 16px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .search-box button:hover {
+      background: #3730a3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4f46e5;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f6f6f6;
+    }
+
+    .status {
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .status.proses { background: #f59e0b; }
+    .status.kirim { background: #3b82f6; }
+    .status.selesai { background: #16a34a; }
+
+    .back-link {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .back-link a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tracking Pengiriman Buku</h1>
+    <p style="text-align:center; color:#555;">Lacak status pengiriman buku pesananmu 📦</p>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Cari Nomor Delivery (misal: TRK001)">
+      <button onclick="cariDelivery()">Cari</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nomor Delivery</th>
+          <th>Nama Pemesan</th>
+          <th>Alamat</th>
+          <th>Status Pengiriman</th>
+        </tr>
+      </thead>
+      <tbody id="tabelTracking">
+      </tbody>
+    </table>
+
+    <div class="back-link">
+      <a href="dashboard.html">⬅️ Kembali ke Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    // Data dummy tracking pengiriman
+    let dataTracking = [
+      { no: 1, delivery: "TRK001", nama: "Fajar Fawwaz", alamat: "Jl. Merdeka No. 45, Bandung", status: "Proses" },
+      { no: 2, delivery: "TRK002", nama: "Rizky Putra", alamat: "Jl. Diponegoro No. 10, Jakarta", status: "Dalam Pengiriman" },
+      { no: 3, delivery: "TRK003", nama: "Siti Rahmawati", alamat: "Jl. Ahmad Yani No. 22, Surabaya", status: "Selesai" }
+    ];
+
+    const tbody = document.getElementById("tabelTracking");
+
+    // ===== Menampilkan tabel tracking =====
+    function tampilkanTracking(data) {
+      tbody.innerHTML = "";
+      data.forEach(item => {
+        let statusClass = "";
+        if (item.status === "Proses") statusClass = "proses";
+        else if (item.status === "Dalam Pengiriman") statusClass = "kirim";
+        else statusClass = "selesai";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.no}</td>
+          <td>${item.delivery}</td>
+          <td>${item.nama}</td>
+          <td>${item.alamat}</td>
+          <td><span class="status ${statusClass}">${item.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    tampilkanTracking(dataTracking);
+
+    // ===== Fitur Pencarian Nomor Delivery =====
+    function cariDelivery() {
+      const input = document.getElementById("searchInput").value.trim().toUpperCase();
+      if (input === "") {
+        tampilkanTracking(dataTracking);
+        return;
+      }
+
+      const hasil = dataTracking.filter(item => item.delivery.toUpperCase().includes(input));
+      if (hasil.length > 0) {
+        tampilkanTracking(hasil);
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5">🚫 Nomor delivery <b>${input}</b> tidak ditemukan</td></tr>`;
+      }
+    }
+
+    // ===== Simulasi Perubahan Status Otomatis =====
+    setInterval(() => {
+      dataTracking = dataTracking.map(item => {
+        if (item.status === "Proses") item.status = "Dalam Pengiriman";
+        else if (item.status === "Dalam Pengiriman") item.status = "Selesai";
+        return item;
+      });
+      tampilkanTracking(dataTracking);
+    }, 10000); // setiap 10 detik
+  </script>
+</body>
+</html>
