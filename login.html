@@ -1,1 +1,249 @@
-login html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Toko Buku Online</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .login-bg {
+      background: linear-gradient(120deg, #4f46e5, #7c3aed);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-card {
+      background: #fff;
+      width: 380px;
+      padding: 40px 35px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 1s ease;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    .logo-section h1 {
+      font-size: 22px;
+      color: #2b2b2b;
+      margin: 10px 0 5px;
+    }
+
+    .logo-section p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #7c3aed;
+      outline: none;
+      box-shadow: 0 0 4px #c4b5fd;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .login-links {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    .login-links a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .close {
+      float: right;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="login-bg">
+
+  <div class="login-card">
+    <div class="logo-section">
+      <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png" alt="Logo" class="logo">
+      <h1>Toko Buku Online</h1>
+      <p>Teman setia pencinta literasi 📚</p>
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Masukkan email kamu..." required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Masukkan password..." required>
+      </div>
+
+      <button type="submit" class="btn-login">Masuk</button>
+
+      <div class="login-links">
+        <a href="#" id="forgotLink">Lupa Password?</a>
+        <span> | </span>
+        <a href="#" id="registerLink">Daftar Akun</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBox" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <p id="modalText"></p>
+    </div>
+  </div>
+
+  <script>
+    // ======= Akun Login yang diizinkan =======
+    const users = [
+      { email: "user@example.com", password: "12345", nama: "User Biasa" },
+      { email: "fajar@email.com", password: "12345", nama: "Fajar Fawwaz" },
+      { email: "admin@tokobuku.com", password: "admin123", nama: "Administrator" }
+    ];
+
+    const form = document.getElementById('loginForm');
+    const modal = document.getElementById('modalBox');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const closeBtn = document.querySelector('.close');
+    const forgotLink = document.getElementById('forgotLink');
+    const registerLink = document.getElementById('registerLink');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      // cek apakah cocok
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (user) {
+        alert(`Login berhasil! Selamat datang, ${user.nama} 📚`);
+        // simpan nama ke localStorage biar muncul di dashboard
+        localStorage.setItem("namaLogin", user.nama);
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Email atau password yang Anda masukkan salah!");
+      }
+    });
+
+    forgotLink.onclick = function() {
+      modal.style.display = "block";
+      modalTitle.innerText = "Lupa Password 🔑";
+      modalText.innerText = "Hubungi admin@tokobuku.com untuk reset password.";
+    };
+
+    registerLink.onclick = function() {
+      modal.style.display = "block";
+      modalTitle.innerText = "Daftar Akun Baru 🧾";
+      modalText.innerText = "Fitur pendaftaran akan segera tersedia.";
+    };
+
+    closeBtn.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
