@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan Buku</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Form Pemesanan Buku</h1>
+    <form id="formPesanan">
+      <label>Nama Pemesan:</label>
+      <input type="text" id="nama" required>
+
+      <label>Alamat:</label>
+      <input type="text" id="alamat" required>
+
+      <label>Judul Buku:</label>
+      <select id="bukuSelect"></select>
+
+      <label>Jumlah:</label>
+      <input type="number" id="jumlah" min="1" required>
+
+      <label>Metode Pembayaran:</label>
+      <select id="metode">
+        <option>Transfer Bank</option>
+        <option>COD</option>
+        <option>E-Wallet</option>
+      </select>
+
+      <button type="submit">Pesan Sekarang</button>
+    </form>
+
+    <div class="back-link">
+      <a href="dashboard.html">⬅️ Kembali ke Dashboard</a>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>
