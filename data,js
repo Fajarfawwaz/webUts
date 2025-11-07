@@ -1,0 +1,38 @@
+// Data katalog buku dengan gambar baru (semua valid & tidak corrupt)
+const dataKatalogBuku = [
+  { 
+    id: 1, 
+    judul: "Pemrograman Web Dasar", 
+    stok: 12, 
+    harga: 75000,
+    gambar: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80"
+  },
+  { 
+    id: 2, 
+    judul: "Algoritma dan Struktur Data", 
+    stok: 8, 
+    harga: 85000,
+    gambar: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80"
+  },
+  { 
+    id: 3, 
+    judul: "Basis Data Lanjut", 
+    stok: 10, 
+    harga: 95000,
+    gambar: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&fit=crop&w=400&q=80"
+  },
+  { 
+    id: 4, 
+    judul: "Jaringan Komputer", 
+    stok: 6, 
+    harga: 90000,
+    gambar: "https://images.unsplash.com/photo-1591696205602-2f950c417cb9?auto=format&fit=crop&w=400&q=80"
+  },
+  { 
+    id: 5, 
+    judul: "Kecerdasan Buatan", 
+    stok: 5, 
+    harga: 120000,
+    gambar: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80"
+  }
+];
