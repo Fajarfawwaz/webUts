@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Buku - Toko Buku Online</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ===== Styling tambahan untuk halaman stok ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th {
+      background: #4f46e5;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    td {
+      text-align: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+      background-color: #f6f6f6;
+    }
+
+    img {
+      width: 70px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    .form-tambah {
+      margin-top: 30px;
+      background: #f9f9ff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-tambah input {
+      margin: 8px 0;
+    }
+
+    .form-tambah h3 {
+      color: #4f46e5;
+      margin-bottom: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(79,70,229,0.4);
+    }
+
+    .back-link {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .back-link a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    .preview {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .preview img {
+      width: 120px;
+      height: 160px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      object-fit: cover;
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Katalog Buku</h1>
+
+    <!-- Tabel daftar buku -->
+    <table id="tabelBuku">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Gambar</th>
+          <th>Judul Buku</th>
+          <th>Stok</th>
+          <th>Harga</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Form tambah buku baru -->
+    <div class="form-tambah">
+      <h3>Tambah Buku Baru</h3>
+      <input type="text" id="judulBaru" placeholder="Judul Buku">
+      <input type="number" id="stokBaru" placeholder="Stok">
+      <input type="number" id="hargaBaru" placeholder="Harga">
+      <input type="text" id="gambarBaru" placeholder="Link Gambar (opsional)">
+      
+      <!-- preview gambar -->
+      <div class="preview">
+        <img id="previewImage" src="" alt="Preview Gambar Buku">
+      </div>
+
+      <button onclick="tambahBuku()">Tambah Buku</button>
+    </div>
+
+    <div class="back-link">
+      <a href="dashboard.html">⬅️ Kembali ke Dashboard</a>
+    </div>
+  </div>
+
+  <!-- Script data -->
+  <script src="js/data.js"></script>
+  <script>
+    const tbody = document.querySelector("#tabelBuku tbody");
+    const inputGambar = document.getElementById("gambarBaru");
+    const previewImg = document.getElementById("previewImage");
+
+    // ==== Menampilkan data awal buku ====
+    function tampilkanBuku() {
+      tbody.innerHTML = "";
+      dataKatalogBuku.forEach((buku, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td><img src="${buku.gambar}" alt="${buku.judul}"></td>
+          <td>${buku.judul}</td>
+          <td>${buku.stok}</td>
+          <td>Rp ${buku.harga.toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ==== Preview gambar otomatis ====
+    inputGambar.addEventListener("input", () => {
+      const url = inputGambar.value.trim();
+      if (url) {
+        previewImg.src = url;
+        previewImg.style.display = "block";
+      } else {
+        previewImg.style.display = "none";
+      }
+    });
+
+    // ==== Fungsi Tambah Buku Baru ====
+    function tambahBuku() {
+      const judul = document.getElementById("judulBaru").value;
+      const stok = parseInt(document.getElementById("stokBaru").value);
+      const harga = parseInt(document.getElementById("hargaBaru").value);
+      const gambar = document.getElementById("gambarBaru").value || "assets/images/default.jpg";
+
+      if (!judul || isNaN(stok) || isNaN(harga)) {
+        alert("⚠️ Harap isi semua kolom dengan benar!");
+        return;
+      }
+
+      dataKatalogBuku.push({
+        id: dataKatalogBuku.length + 1,
+        judul,
+        stok,
+        harga,
+        gambar
+      });
+
+      tampilkanBuku();
+
+      // reset form
+      document.getElementById("judulBaru").value = "";
+      document.getElementById("stokBaru").value = "";
+      document.getElementById("hargaBaru").value = "";
+      document.getElementById("gambarBaru").value = "";
+      previewImg.style.display = "none";
+
+      alert("✅ Buku berhasil ditambahkan!");
+    }
+
+    tampilkanBuku();
+  </script>
+</body>
+</html>
